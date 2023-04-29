@@ -43,3 +43,39 @@ fragment ImageFragment on Image {
   alt
 }
 `;
+
+export const getProductDetailsBySlug = gql`
+query ProductBySlug($slug: String!) {
+  product(slug: $slug, channel: "default-channel") {
+    ...ProductDetailsFragment
+  }
+}
+
+fragment ProductDetailsFragment on Product {
+  id
+  name
+  slug
+  description
+  seoDescription
+  seoTitle
+  isAvailableForPurchase
+  attributes {
+    attribute {
+      id
+    }
+  }
+  pricing {
+    priceRange {
+      start {
+        gross {
+          currency
+          amount
+        }
+      }
+    }
+  }
+  category {
+    name
+  }
+}
+`;

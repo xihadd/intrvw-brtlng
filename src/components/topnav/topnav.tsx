@@ -2,9 +2,20 @@ import React from "react";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+
+const isActivePath = (path: string, asPath: string) => {
+  if (asPath.includes(path)) {
+    return "text-yellow-400 hover:text-gray-900";
+  }
+  return "";
+};
+
+const ROUTES = ["watches", "straps", "stores", "service"];
 
 const TopNav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { asPath } = useRouter();
 
   return (
     <div className="bg-white h-16 flex flex-row justify-between sticky top-0 z-10 drop-shadow-sm">
@@ -30,38 +41,19 @@ const TopNav = () => {
       </Link>
       <nav className="flex flex-col justify-center max-sm:hidden">
         <ul className="flex flex-row">
-          <li className="ml-2 p-3">
-            <Link
-              href="#"
-              className="uppercase hover:text-yellow-400 transition-all duration-150 ease-in"
-            >
-              Watches
-            </Link>
-          </li>
-          <li className="ml-2 p-3">
-            <Link
-              href="#"
-              className="uppercase hover:text-yellow-400 transition-all duration-150 ease-in"
-            >
-              Straps
-            </Link>
-          </li>
-          <li className="p-3">
-            <Link
-              href="#"
-              className="uppercase hover:text-yellow-400 transition-all duration-150 ease-in"
-            >
-              Stores
-            </Link>
-          </li>
-          <li className="p-3">
-            <Link
-              href="#"
-              className="uppercase hover:text-yellow-400 transition-all duration-150 ease-in"
-            >
-              Service
-            </Link>
-          </li>
+          {ROUTES.map((r) => (
+            <li className="ml-2 p-3" key={r}>
+              <Link
+                href="/watches"
+                className={`uppercase hover:text-yellow-400 transition-all duration-150 ease-in ${isActivePath(
+                  r,
+                  asPath
+                )}`}
+              >
+                {r}
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
 
@@ -145,43 +137,21 @@ const TopNav = () => {
 
       {isMenuOpen && (
         <nav className="flex flex-col justify-center absolute z-100 top-0 left-0 w-screen h-screen bg-black/90">
-          <div className="absolute right-6 font-bold top-3 text-4xl text-yellow-400" onClick={() => setIsMenuOpen(false)}>
-              X
+          <div
+            className="absolute right-6 font-bold top-3 text-4xl text-yellow-400"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            X
           </div>
 
           <ul className="flex flex-col ml-4">
-            <li className="p-3 mb-4">
-              <Link
-                href="#"
-                className="uppercase text-yellow-400 text-3xl"
-              >
-                Watches
-              </Link>
-            </li>
-            <li className="p-3 mb-4">
-              <Link
-                href="#"
-                className="uppercase text-yellow-400 text-3xl"
-              >
-                Straps
-              </Link>
-            </li>
-            <li className="p-3 mb-4">
-              <Link
-                href="#"
-                className="uppercase text-yellow-400 text-3xl"
-              >
-                Stores
-              </Link>
-            </li>
-            <li className="p-3 mb-4">
-              <Link
-                href="#"
-                className="uppercase text-yellow-400 text-3xl"
-              >
-                Service
-              </Link>
-            </li>
+            {ROUTES.map((r) => (
+              <li className="p-3 mb-4" key={'mb'+r}>
+                <Link href="#" className="uppercase text-yellow-400 text-3xl">
+                  {r}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
       )}

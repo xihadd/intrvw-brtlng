@@ -8,7 +8,7 @@ const Layout = (props: any) => {
   return (
     <>
       <TopNav />
-      <div className="z-0 bg-gray-100">{children}</div>
+      <div className="z-0 bg-gray-100 min-h-screen">{children}</div>
       <Footer />
     </>
   );
