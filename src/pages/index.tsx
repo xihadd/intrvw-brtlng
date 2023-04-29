@@ -3,16 +3,9 @@ import Head from "next/head";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 
 import { getHomePageProducts, } from "@/queries";
-import { ApolloQueryResult } from "@apollo/client";
-
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-import { Product } from "@/saleor";
-
-import createApolloClient from "@/gql/client";
 import ProductGrid from "@/components/productGrid/productGrid";
-
-
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const client = new ApolloClient({
@@ -32,8 +25,11 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   };
 };
 
-export default function HomePage({data}) : InferGetStaticPropsType<typeof getStaticProps> {
-  console.log('home', data);
+type HomePageProps = {
+  data: []
+}
+
+export default function HomePage({data}: HomePageProps) {
   return (
     <React.Fragment>
       <Head>
