@@ -27,7 +27,7 @@ export default function ProductCard({ product }: { product: any }) {
         href={`/watches/${slug}`}
         className="w-44 h-12 bg-yellow-400 flex justify-center mx-auto my-3"
       >
-        <span className="text-gray-900 uppercase text-center font-bold text-lg align-center m-auto">
+        <span className="text-gray-900 hover:text-white uppercase text-center font-bold text-lg transition-all duration-150 ease-in align-center m-auto">
           Add to Bag
         </span>
       </Link>

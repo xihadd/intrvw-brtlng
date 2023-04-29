@@ -74,6 +74,14 @@ fragment ProductDetailsFragment on Product {
       }
     }
   }
+  thumbnail{
+    url
+  }
+  media {
+    url
+    alt
+    type
+  }
   category {
     name
   }
