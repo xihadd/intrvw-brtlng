@@ -3,7 +3,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['prod.demo.saleor.cloud']
+    domains: ['prod.demo.saleor.cloud', 'www.breitling.com']
   }
 }
 

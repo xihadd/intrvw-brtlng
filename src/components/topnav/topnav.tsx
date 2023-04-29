@@ -144,7 +144,7 @@ const TopNav = () => {
       </nav>
 
       {isMenuOpen && (
-        <nav className="flex flex-col justify-center absolute z-10 top-0 left-0 w-screen h-screen bg-black/90">
+        <nav className="flex flex-col justify-center absolute z-100 top-0 left-0 w-screen h-screen bg-black/90">
           <div className="absolute right-6 font-bold top-3 text-4xl text-yellow-400" onClick={() => setIsMenuOpen(false)}>
               X
           </div>

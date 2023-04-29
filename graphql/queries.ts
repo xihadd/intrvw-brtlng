@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const getHomePageProducts = gql`
   query ProductGetElements {
-  products(first: 12, channel: "default-channel") {
+  products(first: 8, channel: "default-channel") {
     totalCount
     edges {
       node {
