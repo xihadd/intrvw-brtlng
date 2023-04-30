@@ -9,27 +9,27 @@ import { GetStaticPropsContext } from "next";
 import { getProductDetailsBySlug } from "@/queries";
 
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
-    const client = new ApolloClient({
-      uri: "https://demo.saleor.io/graphql/",
-      cache: new InMemoryCache(),
-    });
+// export const getStaticProps = async (context: GetStaticPropsContext) => {
+//     const client = new ApolloClient({
+//       uri: "https://demo.saleor.io/graphql/",
+//       cache: new InMemoryCache(),
+//     });
   
-    const result = await client.query({ query: getProductDetailsBySlug, variables: { slug: "breitling-top-time-chrono-42" } });
+//     const result = await client.query({ query: getProductDetailsBySlug, variables: { slug: "breitling-top-time-chrono-42" } });
   
-    const products: [] = result.data.products.edges;
+//     const products: [] = result.data.products.edges;
   
-    return {
-      props: {
-        data: products,
-      },
-      revalidate: 60 * 60, // value in seconds, how often ISR will trigger on the server
-    };
-  };
+//     return {
+//       props: {
+//         data: products,
+//       },
+//       revalidate: 60 * 60, // value in seconds, how often ISR will trigger on the server
+//     };
+//   };
   
-  type HomePageProps = {
-    data: [];
-  };
+//   type HomePageProps = {
+//     data: [];
+//   };
 
 export default function Products() {
   const { loading, error, data } = useProductGetHomePageItemsQuery();
