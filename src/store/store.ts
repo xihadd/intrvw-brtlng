@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import layoutSlice from './layoutSlice'
+import filterSlice from './filterSlice'
 
 export const store = configureStore({
   reducer: {
     layout: layoutSlice,
+    filters: filterSlice,
   },
 })
 

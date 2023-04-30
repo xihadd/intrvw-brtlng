@@ -14,6 +14,7 @@ export type Choice = {
   id: string;
   name: string;
   slug: string;
+  filter: string;
 };
 
 export interface FilterState {
@@ -29,12 +30,7 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     updateChoices: (state, action: PayloadAction<Choice[]>) => {
-        debugger;
-      console.log('store:', action.payload);
-      state.selectedFilters = [
-        ...state.selectedFilters,
-        ...action.payload,
-      ];
+      state.selectedFilters = action.payload
     },
   },
 });
