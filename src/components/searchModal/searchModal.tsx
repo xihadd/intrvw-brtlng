@@ -22,8 +22,6 @@ export default function SearchModal(props: {}) {
     }
   );
 
-  console.log();
-
   useDebounce(
     () => {
       if (searchQuery !== debounceQuery) {
@@ -44,7 +42,7 @@ export default function SearchModal(props: {}) {
   return (
     <Transition show={searchOpen} as={Fragment}>
       <Dialog open={searchOpen} onClose={() => onClose()}>
-        <div className="fixed inset-0 flex items-start justify-center">
+        <div className="fixed top-14 inset-0 flex items-start justify-center">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -56,12 +54,12 @@ export default function SearchModal(props: {}) {
           >
             <Dialog.Panel className="w-full h-screen bg-white overflow-hidden">
               <div
-                className="max-sm:hidden absolute right-6 top-20 text-5xl font-light text-gray-400 z-10 cursor-pointer"
+                className="max-sm:hidden absolute right-8 top-4 text-5xl font-light text-gray-400 z-10 cursor-pointer"
                 onClick={() => dispatch(toggleSearch())}
               >
                 x
               </div>
-              <div className="flex flex-col m-2 pt-24">
+              <div className="flex flex-col m-2 pt-10">
                 <h4 className="max-sm:hidden text-yellow-400 text-3xl uppercase font-light mx-auto mb-4">
                   Search
                 </h4>

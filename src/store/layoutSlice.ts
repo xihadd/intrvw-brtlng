@@ -1,4 +1,3 @@
-import { configureStore } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
 export interface LayoutState {
@@ -11,17 +10,14 @@ const initialState: LayoutState = {
     mobileMenuOpen: false,
 }
 
-// create a slice 
 export const layoutSlice= createSlice({
 name:"layout",
 initialState,
 reducers:{
      toggleSearch:state=>{
-        console.log("toggleSearch");
         state.searchOpen= !state.searchOpen;
      },
      toggleMobileMenu:state=>{
-        console.log("toggleMobileMenu");
         state.mobileMenuOpen= !state.mobileMenuOpen
     },
    }

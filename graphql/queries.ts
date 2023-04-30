@@ -38,6 +38,25 @@ const fragmentProduct = gql`
   }
 `;
 
+const fragmentAttributeFilter = gql`
+  fragment AttributeFilterFragment on Attribute {
+    id
+    inputType
+    name
+    slug
+    withChoices
+    choices(first: 20) {
+      edges {
+        node {
+          id
+          name
+          slug
+        }
+      }
+    }
+  }
+`;
+
 export const getHomePageProducts = gql`
   query ProductGetElements {
     products(first: 8, channel: "default-channel") {
@@ -62,15 +81,32 @@ export const getProductDetailsBySlug = gql`
 `;
 
 export const getProductsBySearch = gql`
-query getProducts($filter: ProductFilterInput) {
-  products(first: 12, channel: "default-channel", filter: $filter) {
-    totalCount
-    edges {
-      node {
-        ...ProductDetailsFragment
+  query getProducts($filter: ProductFilterInput) {
+    products(first: 12, channel: "default-channel", filter: $filter) {
+      totalCount
+      edges {
+        node {
+          ...ProductDetailsFragment
+        }
       }
     }
   }
-}
-${fragmentProduct}
+  ${fragmentProduct}
+`;
+
+export const getAtrributes = gql`
+  query FilteringAttributesQuery(
+    $filter: AttributeFilterInput!
+    $channel: String!
+  ) {
+    attributes(filter: $filter, first: 100, channel: $channel) {
+      totalCount
+      edges {
+        node {
+          ...AttributeFilterFragment
+        }
+      }
+    }
+  }
+  ${fragmentAttributeFilter}
 `;
