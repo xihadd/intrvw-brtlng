@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ProductCard({ product }: { product: any }) {
-  const { id, name, thumbnail, slug } = product.node;
+  const { id, name, thumbnail, slug, pricing: {priceRange: {start: {gross}}} } = product.node;
 
   return (
     <div
@@ -17,11 +17,13 @@ export default function ProductCard({ product }: { product: any }) {
         <Image fill src={thumbnail.url} alt={thumbnail.alt} />
       </Link>
 
-      <Link href={`/watches/${slug}`} className="flex mb-6 w-full mt-4 h-6">
+      <Link href={`/watches/${slug}`} className="flex mb-4 w-full mt-4 h-6">
         <h3 className="font-medium text-gray-900 text-ellipsis overflow-hidden text-center w-full h-6">
           {name}
         </h3>
       </Link>
+
+      <div className="font-light text-sm text-gray-800 text-center mb-2">{gross.amount}&nbsp;{gross.currency}</div>
 
       <Link
         href={`/watches/${slug}`}

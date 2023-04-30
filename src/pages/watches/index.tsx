@@ -3,9 +3,10 @@ import { GetStaticPropsContext } from "next";
 import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
 import { getAtrributes, getProductsBySearch } from "@/queries";
 import ProductFilter from "@/components/productFilter/productFilter";
-import { Attribute, updateChoices } from "@/store/filterSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { Attribute } from "@/store/filterSlice";
+import {  useAppSelector } from "@/store/hooks";
 import ProductGrid from "@/components/productGrid/productGrid";
+import Head from "next/head";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const client = new ApolloClient({
@@ -84,10 +85,11 @@ export default function Products({ attributes }: WatchesProps) {
     },
   });
 
-  console.log(called, data, selectedFilters);
-
   return (
     <div className="flex flex-col justify-center relative">
+      <Head>
+        <title>Breitling | All Watches</title>
+      </Head>
       <ProductFilter
         attributes={cleanedAttributes}
         count={data?.products.totalCount}
