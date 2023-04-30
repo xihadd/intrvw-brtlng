@@ -6,7 +6,6 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { GetStaticPropsContext } from "next";
 import { getProductDetailsBySlug } from "@/queries";
 import Link from "next/link";
-import { type } from "os";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const client = new ApolloClient({
@@ -108,7 +107,7 @@ export default function ProductPage({ data }: ProductPageProps) {
             {name}
           </div>
           <div className="text-center text-xl sm:text-left mt-4 mb-2">
-            {Math.abs(gross.amount)}&nbsp;{gross.currency}
+            {Math.abs(gross.amount)}&nbsp;{gross.currency} <span className="text-sm text-gray-500">VAT Incl.</span>
           </div>
           <p className="text-center sm:text-left text-sm my-4">
             Delivery Available

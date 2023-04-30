@@ -16,8 +16,10 @@
     "incremental": true,
     "paths": {
       "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
       "@/saleor": ["./src/gql/saleor.ts"],
       "@/queries": ["./graphql/queries.ts"],
+      "@/store": ["./src/store/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

@@ -4,7 +4,20 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Inter'],
+        serif: ['Inter'],
+        mono: ['Inter'],
+        display: ['Inter'],
+        body: ['Inter']
+    },
+    borderWidth: {
+        DEFAULT: '1px',
+        '0': '0',
+        '1': '1px'
+    }
+    },
   },
   plugins: [],
 }
