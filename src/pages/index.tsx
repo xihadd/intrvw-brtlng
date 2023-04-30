@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Image from "next/image";
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { GetStaticPropsContext } from "next";
 
 import { getHomePageProducts } from "@/queries";
 import { ApolloClient, InMemoryCache } from "@apollo/client";

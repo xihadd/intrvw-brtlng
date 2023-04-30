@@ -95,11 +95,8 @@ export const getProductsBySearch = gql`
 `;
 
 export const getAtrributes = gql`
-  query FilteringAttributesQuery(
-    $filter: AttributeFilterInput!
-    $channel: String!
-  ) {
-    attributes(filter: $filter, first: 100, channel: $channel) {
+  query FilteringAttributesQuery {
+    attributes(first: 50, channel: "default-channel") {
       totalCount
       edges {
         node {

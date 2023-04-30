@@ -10,7 +10,7 @@ const initialState: LayoutState = {
     mobileMenuOpen: false,
 }
 
-export const layoutSlice= createSlice({
+export const layoutSlice = createSlice({
 name:"layout",
 initialState,
 reducers:{
