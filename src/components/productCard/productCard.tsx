@@ -17,7 +17,7 @@ export default function ProductCard({ product }: { product: any }) {
         <Image fill src={thumbnail.url} alt={thumbnail.alt} />
       </Link>
 
-      <Link href={`/watches/${slug}`} className="flex mb-4 w-full mt-4 h-6">
+      <Link href={`/watches/${slug}`} className="flex mb- w-full mt-4 h-6">
         <h3 className="font-medium text-gray-900 text-ellipsis overflow-hidden text-center w-full h-6">
           {name}
         </h3>

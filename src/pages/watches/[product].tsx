@@ -4,9 +4,10 @@ import Image from "next/image";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 import { GetStaticPropsContext } from "next";
-import { getProductDetailsBySlug } from "@/queries";
+import { getProductDetailsBySlug, getProductsByLastPublished } from "@/queries";
 import Link from "next/link";
 import ProductGallery from "@/components/productDetails/productGallery";
+import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const client = new ApolloClient({
@@ -39,8 +40,27 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 };
 
 export const getStaticPaths = async () => {
-  // todo: get all products from saleor and re visit this
-  return { paths: [], fallback: "blocking" };
+  const client = new ApolloClient({
+    uri: "https://demo.saleor.io/graphql/",
+    cache: new InMemoryCache(),
+    ssrMode: true,
+  });
+
+  const result = await client.query({
+    query: getProductsByLastPublished,
+    variables: { sort: {
+    	direction: "ASC",
+    	field: "PUBLISHED"
+  } },
+  });
+
+  const slugs = result.data.products.edges || [];
+
+  const paths = slugs.map((item:any) => ({
+    params: { product: item.node.slug },
+  }))
+
+  return { paths, fallback: "blocking" };
 };
 
 type ProductPageProps = {
@@ -88,13 +108,7 @@ export default function ProductPage({ data }: ProductPageProps) {
       <Head>
         <title>Breitling | {name}</title>
       </Head>
-      <div className="breadcrumb text-gray-500 ml-2 mt-2">
-        <Link href='/'> Home &nbsp;</Link>
-        <span className="text-yellow-400">&#62;</span>
-        <Link href='/watches'>&nbsp; Watches &nbsp;</Link>
-        <span className="text-yellow-400">&#62;</span>
-        <span className="text-gray-800">&nbsp;{name}</span>
-      </div>
+     <Breadcrumbs />
       <div className="mt-3 flex flex-col sm:flex-row">
         <div className="sm:w-1/2">
           <Image

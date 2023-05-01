@@ -20,7 +20,7 @@ const PagesMenu = (props: {routes: string[] | null}) => {
           {routes.map((r) => (
             <li className="ml-2 p-3" key={r}>
               <Link
-                href="/watches"
+                href={`/${r}`}
                 className={`uppercase hover:text-yellow-400 transition-all duration-150 ease-in ${isActivePath(
                   r,
                   asPath

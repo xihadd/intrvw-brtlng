@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { GetStaticPropsContext } from "next";
 import Head from "next/head";
 
 import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
 import { getAtrributes, getProductsByFilter } from "@/queries";
-import ProductFilter from "@/components/productFilter/productFilter";
-import { Attribute, Sort } from "@/store/filterSlice";
-import { useAppSelector } from "@/store/hooks";
+import ProductFilter from "@/components/productMenu/productMenu";
+import { Attribute, Choice, Sort, updateLastCursor } from "@/store/filterSlice";
+import { useAppDispatch, useAppSelector, } from "@/store/hooks";
 import ProductGrid from "@/components/productGrid/productGrid";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
@@ -16,6 +16,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     ssrMode: true,
   });
 
+  // ssr query for attributes to be preloaded in page at server side
   const result = await client.query({ query: getAtrributes });
 
   const attributes: [] = result.data.attributes?.edges;
@@ -24,7 +25,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     props: {
       attributes,
     },
-    revalidate: 60 * 60, // value in seconds, how often ISR will trigger on the server
+    revalidate: 60 * 60
   };
 };
 
@@ -33,20 +34,26 @@ type WatchesProps = {
 };
 
 type queryVariables = {
-  limit: number,
-  offset: string,
+  limit: number;
+  offset: string | undefined;
   filter: {
     attributes: {
       slug: string;
       values: string[];
-    }[],
-  },
+    }[];
+  };
   sort?: {
-    direction: string,
-    field: string
-  }
-}
+    direction: string;
+    field: string;
+  };
+};
 
+/**
+ * Given a list of attributes, return a list of attributes that are mapped to a typ Attribute
+ * and remove attributes that are not needed for the filter
+ * @param attributes
+ * @returns 
+ */
 const cleanAttributes = (attributes: any): Attribute[] => {
   const cleanedAttributes: Attribute[] = attributes
     .filter(
@@ -85,42 +92,54 @@ const cleanAttributes = (attributes: any): Attribute[] => {
   return cleanedAttributes;
 };
 
-export default function Products({ attributes }: WatchesProps) {
-  const [lastCursor, setLastCursor] = useState<string>("");
-
-  const selectedFilters = useAppSelector(
-    (state) => state.filters.selectedFilters
-  );
-
-  const sortBy = useAppSelector((state) => state.filters.sortBy);
-
-  const cleanedAttributes = cleanAttributes(attributes);
-  
-  const variables:queryVariables = {
+/**
+ * Compute the query variables for the getProductsByFilter query adding sort, limit and offset
+ * @param lastCursor 
+ * @param selectedFilters 
+ * @param sortBy 
+ * @returns 
+ */
+const computeQueryVariables = (
+  lastCursor: string | undefined,
+  selectedFilters: Choice[],
+  sortBy: Sort
+): queryVariables => {
+  const variables: queryVariables = {
     limit: 16,
     offset: lastCursor,
     filter: {
       attributes: selectedFilters.map((filter) => ({
         slug: filter?.filter || "",
         values: [filter?.slug || ""],
-      }))
+      })),
     },
   };
 
   if (sortBy !== Sort.default) {
     variables.sort = {
       direction: sortBy,
-    	field: "NAME"
+      field: "NAME",
     };
   }
+  return variables;
+};
+
+export default function Products({ attributes }: WatchesProps) {
+  const { selectedFilters, sortBy, lastCursor } = useAppSelector((state) => state.filters);
+  const dispatch = useAppDispatch();
+
+  const cleanedAttributes = cleanAttributes(attributes);
+
+  const variables = computeQueryVariables(lastCursor, selectedFilters, sortBy);
 
   const { called, loading, data } = useQuery(getProductsByFilter, {
     variables,
   });
+
   const loadMore = () => {
     const lastcursor =
       data?.products?.edges[data?.products?.edges.length - 1]?.cursor || "";
-    setLastCursor(lastcursor);
+    dispatch(updateLastCursor(lastcursor));
   };
 
   return (

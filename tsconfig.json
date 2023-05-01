@@ -20,6 +20,7 @@
       "@/saleor": ["./src/gql/saleor.ts"],
       "@/queries": ["./graphql/queries.ts"],
       "@/store": ["./src/store/*"],
+      "@/error": ["./src/error/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

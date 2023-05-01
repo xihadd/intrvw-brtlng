@@ -26,11 +26,13 @@ export enum Sort {
 export interface FilterState {
   selectedFilters: Choice[];
   sortBy: Sort;
+  lastCursor?: string;
 }
 
 const initialState: FilterState = {
   selectedFilters: [],
   sortBy: Sort.default,
+  lastCursor: ""
 };
 
 export const filterSlice = createSlice({
@@ -42,10 +44,13 @@ export const filterSlice = createSlice({
     },
     updateSortBy: (state, action: PayloadAction<Sort>) => {
       state.sortBy = action.payload;
+    },
+    updateLastCursor: (state, action: PayloadAction<string>) => {
+      state.lastCursor = action.payload;
     }
   },
 });
 
-export const { updateChoices, updateSortBy } = filterSlice.actions;
+export const { updateChoices, updateSortBy, updateLastCursor } = filterSlice.actions;
 
 export default filterSlice.reducer;

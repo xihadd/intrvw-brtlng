@@ -58,8 +58,8 @@ const fragmentAttributeFilter = gql`
 `;
 
 export const getHomePageProducts = gql`
-  query ProductGetElements {
-    products(first: 8, channel: "default-channel") {
+  query ProductGetElements ($sort: ProductOrder) {
+    products(first: 8, channel: "default-channel", sortBy: $sort) {
       totalCount
       edges {
         node {
@@ -121,4 +121,16 @@ export const getAtrributes = gql`
     }
   }
   ${fragmentAttributeFilter}
+`;
+
+export const getProductsByLastPublished = gql`
+ query getProducts ($sort: ProductOrder) {
+    products(first: 100, channel: "default-channel", sortBy: $sort) {
+      edges {
+        node {
+          slug
+        }
+      }
+    }
+  }
 `;
