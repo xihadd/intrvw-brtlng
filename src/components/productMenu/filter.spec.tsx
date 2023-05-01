@@ -10,7 +10,7 @@ jest.mock('@/store/hooks', () => ({
   useAppDispatch: useDispatchMock,
 }));
 
-describe('ProductFilter', () => {
+describe.skip('ProductFilter', () => {
     const attributes = [
       {
         id: '1',

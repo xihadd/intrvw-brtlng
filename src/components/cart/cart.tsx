@@ -3,6 +3,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { useAppSelector } from "@/store/hooks";
 import { removeItemFromCart } from "@/store/cartSlice";
 import { useAppDispatch } from "@/store/hooks";
+import Link from "next/link";
 
 const Cart = () => {
   const { cart, itemsInCart } = useAppSelector((state) => state.cart);
@@ -14,6 +15,7 @@ const Cart = () => {
         <>
           <Popover.Button>
             <div className="flex flex-row">
+              <Link href="/cart" className="w-6 h-8 absolute md:hidden" />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -42,7 +44,7 @@ const Cart = () => {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute max-w-lg w-screen right-0 z-10 mt-3 transform">
+            <Popover.Panel className="absolute md:max-w-lg md:w-screen md:right-0 z-10 mt-3 max-sm:hidden">
               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                 <div className="relative bg-white p-6">
                   <div className="text-lg">

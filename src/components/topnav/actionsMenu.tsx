@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { useAppDispatch } from "@/store/hooks"; 
 import { toggleMobileMenu, toggleSearch } from "@/store/layoutSlice";
-import Cart from "./cart";
+import Cart from "../cart/cart";
 
 const ActionsMenu = (props: {}) => {
     const dispatch = useAppDispatch()

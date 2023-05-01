@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleMobileMenu } from "@/store/layoutSlice";
 
 const MobileMenu = (props: { routes: string[] | null }) => {
+  const { itemsInCart } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   const { routes = [] } = props;
@@ -34,6 +35,11 @@ const MobileMenu = (props: { routes: string[] | null }) => {
             </Link>
           </li>
         ))}
+        <li className="p-3 mb-4" key={"mb-cart"}>
+            <Link href={`/cart`} onClick={() => dispatch(toggleMobileMenu())} className="uppercase text-yellow-400 text-5xl">
+              Cart {itemsInCart > 0 ? `(${itemsInCart})` : ""}
+            </Link>
+          </li>
       </ul>
     </nav>
   );
