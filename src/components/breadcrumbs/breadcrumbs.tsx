@@ -8,7 +8,7 @@ const Breadcrumbs = () => {
   const { asPath } = router;
 
   const homeCrumb = (
-      <Link href={"/"} key={-1}>
+      <Link href={"/"} key={'home-key'}>
         Home
       </Link>
   );
@@ -18,12 +18,12 @@ const Breadcrumbs = () => {
     const href = `/${segments.slice(0, index + 1).join("/")}`;
     const friendlyName = segment.replace(/-/g, " ");
     return (
-      <>
+      <React.Fragment key={index}>
         <span className="text-yellow-400 mx-1">&#62;</span>
-        <Link href={href} key={index} className="capitalize">
+        <Link href={href} className="capitalize">
           {friendlyName}
         </Link>
-      </>
+      </React.Fragment>
     );
   });
 

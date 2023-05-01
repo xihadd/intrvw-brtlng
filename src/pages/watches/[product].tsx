@@ -1,3 +1,4 @@
+import React, {useState} from "react";
 import Head from "next/head";
 import Image from "next/image";
 
@@ -8,6 +9,8 @@ import { getProductDetailsBySlug, getProductsByLastPublished } from "@/queries";
 import Link from "next/link";
 import ProductGallery from "@/components/productDetails/productGallery";
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
+import { addItemToCart, CartItem } from "@/store/cartSlice";
+import { useAppDispatch } from "@/store/hooks";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const client = new ApolloClient({
@@ -91,6 +94,9 @@ type ProductPageProps = {
 };
 
 export default function ProductPage({ data }: ProductPageProps) {
+  const dispatch = useAppDispatch();
+  const [itemInCart, setItemInCart] = useState(false);
+
   const {
     name,
     id,
@@ -103,6 +109,19 @@ export default function ProductPage({ data }: ProductPageProps) {
       },
     },
   } = data;
+
+  const addItemToCartClick = () => {
+    if (itemInCart) return;
+    const cartItem: CartItem = {
+      id,
+      name,
+      price: gross.amount,
+      quantity: 1,
+    };
+    setItemInCart(true);
+    dispatch(addItemToCart(cartItem));
+  };
+
   return (
     <div className="product flex flex-col max-w-6xl mx-auto">
       <Head>
@@ -130,14 +149,14 @@ export default function ProductPage({ data }: ProductPageProps) {
           <p className="text-center sm:text-left text-sm my-4">
             Delivery Available
           </p>
-          <Link
-            href={`#`}
-            className="w-80 h-12 bg-yellow-400 flex justify-center mx-auto sm:ml-0 my-6"
+          <div
+            className="w-80 h-12 bg-yellow-400 flex justify-center cursor-pointer mx-auto sm:ml-0 my-6"
+            onClick={() => addItemToCartClick()}
           >
             <span className="text-gray-900 uppercase hover:text-white transition-all duration-150 ease-in text-center font-bold text-lg align-center m-auto">
-              {isAvailableForPurchase ? "Add to Bag" : "Out of Stock"}
+              {isAvailableForPurchase ? (itemInCart ? "Added" : "Add to Bag") : "Out of Stock"}
             </span>
-          </Link>
+          </div>
           <p className="text-center hover:text-yellow-400 uppercase transition-all duration-150 ease-in sm:text-left cursor-pointer text-sm my-4">
             Book an Appointment
           </p>
