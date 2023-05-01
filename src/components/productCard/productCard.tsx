@@ -14,7 +14,7 @@ export default function ProductCard({ product }: { product: any }) {
         href={`/watches/${slug}`}
         className="relative block w-fill h-44 sm:w-60 sm:h-60"
       >
-        <Image fill src={thumbnail.url} alt={thumbnail.alt} />
+        <Image fill src={thumbnail.url} alt={thumbnail.alt || name} />
       </Link>
 
       <Link href={`/watches/${slug}`} className="flex mb- w-full mt-4 h-6">

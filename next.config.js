@@ -2,6 +2,8 @@
 
 const nextConfig = {
   reactStrictMode: true,
+  compress: true,
+  poweredByHeader: false,
   images: {
     domains: ['prod.demo.saleor.cloud', 'demo.saleor.io', 'www.breitling.com']
   }

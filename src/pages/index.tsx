@@ -46,7 +46,6 @@ export default function HomePage({ data }: HomePageProps) {
         <title>Breitling | Home</title>
         <meta name="description" content="Breitling watches" />
         <meta content="Buy the Breitling Collections Online | Breitling" name="title" />
-        <meta name="robots" content="all" />
       </Head>
       <div className="flex flex-col">
         <div className="w-full relative h-40 sm:h-60 lg:h-80 overflow-hidden flex flex-col">
@@ -61,6 +60,8 @@ export default function HomePage({ data }: HomePageProps) {
             height={511}
             className="min-h-60 sm:min-h-80 absolute top-0 left-0 z-0 min-w-fit"
             alt="Breitling is great"
+            priority
+            loading="eager"
             src="https://www.breitling.com/media/image/3/home_slide_desktop_1400/asset-version-923509f6e3/banner-web-7.jpg"
           />
         </div>
