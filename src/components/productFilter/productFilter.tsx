@@ -1,11 +1,18 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Listbox } from "@headlessui/react";
-import { Attribute, Choice, updateChoices } from "@/store/filterSlice";
+import { Listbox, Tab } from "@headlessui/react";
+import {
+  Attribute,
+  Choice,
+  Sort,
+  updateChoices,
+  updateSortBy,
+} from "@/store/filterSlice";
 import { useAppDispatch } from "@/store/hooks";
 
-export default function ProductFilter({ attributes, count = 0 }: any) {
+export default function ProductFilter({ attributes, count = "..." }: any) {
   const dispatch = useAppDispatch();
   const [selectedFilters, setSelectedFilter] = useState([]);
+  const [selectedSort, setSelectedSort] = useState(Sort.default);
 
   const choicesMerged: Choice[] = attributes.reduce(
     (flat: any, toFlatten: any) => {
@@ -27,6 +34,10 @@ export default function ProductFilter({ attributes, count = 0 }: any) {
     dispatch(updateChoices(choices));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilters, dispatch]);
+
+  useEffect(() => {
+    dispatch(updateSortBy(selectedSort));
+  }, [selectedSort, dispatch]);
 
   return (
     <div className="w-full h-16 shadow-sm bg-white flex flex-col justify-center mb-14">
@@ -75,7 +86,49 @@ export default function ProductFilter({ attributes, count = 0 }: any) {
           })}
         </div>
 
-        <div className="mr-2 max-md:hidden w-20 text-sm">{count} products</div>
+        <div className="mr-2 max-md:hidden text-sm flex flex-row ">
+          <div className="flex flex-row border-r-1 mr-2 pr-2">
+            <div className="text-sm mb-1 text-center w-16 pt-2">Sort By:</div>
+            <div className="flex flex-row">
+              <Tab.Group
+                defaultIndex={2}
+                onChange={(index) => {
+                  switch (index) {
+                    case 0:
+                      setSelectedSort(Sort.ASC);
+                      break;
+                    case 1:
+                      setSelectedSort(Sort.DESC);
+                      break;
+                    case 2:
+                    default:
+                      setSelectedSort(Sort.default);
+                      break;
+                  }
+                }}
+              >
+                <Tab.List className="flex space-x-1">
+                  {Object.keys(Sort).map((sortType) => (
+                    <Tab key={sortType} as={Fragment}>
+                      {({ selected }) => (
+                        <button
+                          className={` border-1 h-8 py-1.5 px-1 capitalize outline-none
+                            ${selected
+                              ? "bg-yellow-400 text-white"
+                              : ""}`}
+                        >
+                          {sortType}
+                        </button>
+                      )}
+                    </Tab>
+                  ))}
+                </Tab.List>
+              </Tab.Group>
+            </div>
+          </div>
+
+          <span className="pt-0">{count} products</span>
+        </div>
       </div>
     </div>
   );

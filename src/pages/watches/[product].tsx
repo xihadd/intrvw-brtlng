@@ -12,6 +12,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   const client = new ApolloClient({
     uri: "https://demo.saleor.io/graphql/",
     cache: new InMemoryCache(),
+    ssrMode: true,
   });
 
   const slug: string | string[] | undefined = context.params?.product;

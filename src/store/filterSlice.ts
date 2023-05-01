@@ -17,12 +17,20 @@ export type Choice = {
   filter: string;
 };
 
+export enum Sort {
+  ASC = "ASC",
+  DESC = "DESC",
+  default = "",
+}
+
 export interface FilterState {
   selectedFilters: Choice[];
+  sortBy: Sort;
 }
 
 const initialState: FilterState = {
   selectedFilters: [],
+  sortBy: Sort.default,
 };
 
 export const filterSlice = createSlice({
@@ -30,11 +38,14 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     updateChoices: (state, action: PayloadAction<Choice[]>) => {
-      state.selectedFilters = action.payload
+      state.selectedFilters = action.payload;
     },
+    updateSortBy: (state, action: PayloadAction<Sort>) => {
+      state.sortBy = action.payload;
+    }
   },
 });
 
-export const { updateChoices } = filterSlice.actions;
+export const { updateChoices, updateSortBy } = filterSlice.actions;
 
 export default filterSlice.reducer;

@@ -94,6 +94,21 @@ export const getProductsBySearch = gql`
   ${fragmentProduct}
 `;
 
+export const getProductsByFilter = gql`
+  query getProducts($filter: ProductFilterInput, $offset: String, $limit: Int, $sort: ProductOrder) {
+    products(first: $limit, channel: "default-channel", sortBy: $sort, filter: $filter, after: $offset) {
+      totalCount
+      edges {
+        cursor
+        node {
+          ...ProductDetailsFragment
+        }
+      }
+    }
+  }
+  ${fragmentProduct}
+`;
+
 export const getAtrributes = gql`
   query FilteringAttributesQuery {
     attributes(first: 50, channel: "default-channel") {

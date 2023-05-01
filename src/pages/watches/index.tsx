@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { GetStaticPropsContext } from "next";
-import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
-import { getAtrributes, getProductsBySearch } from "@/queries";
-import ProductFilter from "@/components/productFilter/productFilter";
-import { Attribute } from "@/store/filterSlice";
-import {  useAppSelector } from "@/store/hooks";
-import ProductGrid from "@/components/productGrid/productGrid";
 import Head from "next/head";
+
+import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
+import { getAtrributes, getProductsByFilter } from "@/queries";
+import ProductFilter from "@/components/productFilter/productFilter";
+import { Attribute, Sort } from "@/store/filterSlice";
+import { useAppSelector } from "@/store/hooks";
+import ProductGrid from "@/components/productGrid/productGrid";
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const client = new ApolloClient({
     uri: "https://demo.saleor.io/graphql/",
     cache: new InMemoryCache(),
+    ssrMode: true,
   });
 
   const result = await client.query({ query: getAtrributes });
@@ -29,6 +31,21 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 type WatchesProps = {
   attributes: [];
 };
+
+type queryVariables = {
+  limit: number,
+  offset: string,
+  filter: {
+    attributes: {
+      slug: string;
+      values: string[];
+    }[],
+  },
+  sort?: {
+    direction: string,
+    field: string
+  }
+}
 
 const cleanAttributes = (attributes: any): Attribute[] => {
   const cleanedAttributes: Attribute[] = attributes
@@ -69,21 +86,42 @@ const cleanAttributes = (attributes: any): Attribute[] => {
 };
 
 export default function Products({ attributes }: WatchesProps) {
+  const [lastCursor, setLastCursor] = useState<string>("");
+
   const selectedFilters = useAppSelector(
     (state) => state.filters.selectedFilters
   );
-  const cleanedAttributes = cleanAttributes(attributes);
 
-  const { called, loading, data } = useQuery(getProductsBySearch, {
-    variables: {
-      filter: {
-        attributes: selectedFilters.map((filter) => ({
-          slug: filter?.filter || "",
-          values: [filter?.slug || ""],
-        })),
-      },
+  const sortBy = useAppSelector((state) => state.filters.sortBy);
+
+  const cleanedAttributes = cleanAttributes(attributes);
+  
+  const variables:queryVariables = {
+    limit: 16,
+    offset: lastCursor,
+    filter: {
+      attributes: selectedFilters.map((filter) => ({
+        slug: filter?.filter || "",
+        values: [filter?.slug || ""],
+      }))
     },
+  };
+
+  if (sortBy !== Sort.default) {
+    variables.sort = {
+      direction: sortBy,
+    	field: "NAME"
+    };
+  }
+
+  const { called, loading, data } = useQuery(getProductsByFilter, {
+    variables,
   });
+  const loadMore = () => {
+    const lastcursor =
+      data?.products?.edges[data?.products?.edges.length - 1]?.cursor || "";
+    setLastCursor(lastcursor);
+  };
 
   return (
     <div className="flex flex-col justify-center relative">
@@ -99,6 +137,16 @@ export default function Products({ attributes }: WatchesProps) {
         <div className="w-full text-center">No results found</div>
       )}
       {data?.products && <ProductGrid products={data?.products?.edges} />}
+      <div className="flex flex-row justify-center mb-6 ">
+        {!loading && (
+          <button
+            className="p-3 boder-1 border-gray-400 bg-white inline w-40 hover:bg-yellow-400 hover:text-white"
+            onClick={() => loadMore()}
+          >
+            Next Page
+          </button>
+        )}
+      </div>
     </div>
   );
 }

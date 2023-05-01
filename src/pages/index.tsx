@@ -12,6 +12,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   const client = new ApolloClient({
     uri: "https://demo.saleor.io/graphql/",
     cache: new InMemoryCache(),
+    ssrMode: true,
   });
 
   const result = await client.query({ query: getHomePageProducts });
@@ -34,7 +35,7 @@ export default function HomePage({ data }: HomePageProps) {
   return (
     <React.Fragment>
       <Head>
-        <title>Home</title>
+        <title>Breitling | Home</title>
       </Head>
       <div className="flex flex-col">
         <div className="w-full relative h-40 sm:h-60 lg:h-80 overflow-hidden flex flex-col">
@@ -62,6 +63,10 @@ export default function HomePage({ data }: HomePageProps) {
 }
 
 /**
+ * 
+ * code with codegen..
+ * 
+ * 
  * import React from "react";
 import Head from "next/head";
 import { GetStaticPropsContext } from "next";
