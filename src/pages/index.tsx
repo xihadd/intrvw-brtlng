@@ -78,7 +78,7 @@ export default function HomePage({ data }: HomePageProps) {
 
 /**
  * 
- * code with codegen..
+ * abdondend code with codegen..
  * 
  * 
  * import React from "react";

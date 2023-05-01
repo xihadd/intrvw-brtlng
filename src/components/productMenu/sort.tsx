@@ -21,6 +21,7 @@ const ProductSort = () => {
               <Tab.Group
                 defaultIndex={2}
                 onChange={(index) => {
+                  // 🫣
                   switch (index) {
                     case 0:
                       setSelectedSort(Sort.ASC);
