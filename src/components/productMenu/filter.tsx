@@ -47,7 +47,9 @@ const ProductFilter = ({attributes}:any) => {
             </div>
 
             <Listbox.Options className="bg-white absolute left-0 top-10 pt-0 w-screen flex flex-row flex-nowrap overflow-y-scroll scrollbar-hide h-12 border-b-1 border-b-gray-300">
-              {attribute.choices.map((choice: Choice) => (
+              {attribute.choices.map((choice: Choice, i) => {
+                if (i > 6) { return}; // only show 6 choices due to space. should be fixed separately
+                return (
                 <Listbox.Option
                   key={choice.id}
                   value={choice.slug}
@@ -66,7 +68,7 @@ const ProductFilter = ({attributes}:any) => {
                     </li>
                   )}
                 </Listbox.Option>
-              ))}
+              )})}
             </Listbox.Options>
           </Listbox>
         );

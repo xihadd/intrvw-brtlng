@@ -37,7 +37,6 @@ export const cleanAttributes = (attributes: any): Attribute[] => {
         [
           "country",
           "release-type",
-          "format",
           "artist",
           "genre",
           "medium",
